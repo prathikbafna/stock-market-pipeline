@@ -2,10 +2,12 @@ from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
 from airflow.sensors.base import PokeReturnValue
 from airflow.operators.python import PythonOperator
+from airflow.providers.docker.operators.docker import DockerOperator
 from datetime import datetime
 
-from include.stock_market.tasks import _get_stock_prices
-from include.stock_market.tasks import _store_prices
+from include.stock_market.tasks import _get_stock_prices, _get_formatted_csv
+from include.stock_market.tasks import _store_prices, _format_prices_pandas_from_minio
+
 
 
 SYMBOL = 'NVDA'
@@ -45,6 +47,33 @@ def stock_market():
         op_kwargs = {'stock_data' : '{{ ti.xcom_pull(task_ids="get_stock_prices", key="return_value") }}'  }
     )
 
+    # format_prices = DockerOperator(
+    #     task_id = 'format_prices',
+    #     image = 'airflow/stock-app',
+    #     container_name = 'format_prices',
+    #     api_version = 'auto',
+    #     auto_remove = 'success',
+    #     docker_url = 'tcp://docker-proxy:2375',
+    #     network_mode = 'container:spark-master',
+    #     tty = True,
+    #     xcom_all = False,
+    #     mount_tmp_dir = False,
+    #     environment = {
+    #         'SPARK_APPLICATION_ARGS' : '{{ ti.xcom_pull(task_ids="store_prices",  key="return_value") }}'
+    #     }
+    # )
+
+    format_prices = PythonOperator(
+        task_id = 'format_prices',
+        python_callable=_format_prices_pandas_from_minio,
+        op_args=["{{ ti.xcom_pull(task_ids='store_prices', key='return_value') }}"]
+    )
+
+    get_formatted_csv = PythonOperator(
+        task_id = 'get_formatted_csv',
+        python_callable = _get_formatted_csv,
+        op_kwargs = {'path' : '{{ ti.xcom_pull(task_ids="store_prices", key="return_value") }}'  }
+    )
     # is_api_available()
     # cmd to test the task
     # astro dev run tasks test stock_market is_api_available
@@ -53,6 +82,10 @@ def stock_market():
     # # cmd to test - astro dev run dags test stock_market
     # # we cannot run just the get_stock_prices task because it is dependent on is_api_available task
 
-    is_api_available() >> get_stock_prices >> store_prices
+    # is_api_available() >> get_stock_prices >> store_prices
+
+    # is_api_available() >> get_stock_prices >> store_prices >> format_prices
+
+    is_api_available() >> get_stock_prices >> store_prices >> format_prices >> get_formatted_csv
 
 stock_market()

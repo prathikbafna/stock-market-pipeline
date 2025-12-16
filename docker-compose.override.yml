@@ -38,6 +38,7 @@ services:
       retries: 3
     networks:
       - ndsnet
+      - default
   
   spark-master:
     image: airflow/spark-master
@@ -50,6 +51,7 @@ services:
       - INIT_DAEMON_STEP=setup_spark
     networks:
       - ndsnet
+      - default
 
   spark-worker:
     image: airflow/spark-worker
@@ -63,6 +65,7 @@ services:
       - "SPARK_MASTER=spark://spark-master:7077"
     networks:
       - ndsnet
+      - default
 
   metabase:
     image: metabase/metabase:v0.52.8.4
@@ -73,6 +76,7 @@ services:
       - ./include/data/metabase:/metabase-data
     networks:
       - ndsnet
+      - default
 
   docker-proxy:
     image: alpine/socat
@@ -83,6 +87,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - ndsnet
+      - default
 
 networks:
   ndsnet:

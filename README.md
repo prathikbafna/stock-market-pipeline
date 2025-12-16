@@ -6,6 +6,8 @@ Welcome to Astronomer! This project was generated after you ran 'astro dev init'
 Project Contents
 ================
 
+
+
 Your Astro project contains the following files and folders:
 
 - dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
