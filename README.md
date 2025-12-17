@@ -37,7 +37,25 @@ MinIO – S3-compatible object storage
 
 PostgreSQL – Data warehouse
 
-Python – API ingestion and transformation logic
+Python – API ingestion 
+
+Spark - transformation logic
+
+Metaflow - Dashboarding
+
+
+
+## Airflow DAG
+
+![Airflow DAG Graph](airflow_dag_graph.png)
+![Airflow Connections](Airflow_connections.png)
+
+
+## Infrastructure Overview
+
+![Docker Containers](Docker_containers.png)
+![MinIO Storage](Minio_data_storage.png)
+![Postgres Data](Postgres_data.png)
 
 🔄 Data Pipeline Flow
 DAG: stock_market
@@ -51,6 +69,7 @@ Step	Task	Description
 4	format_prices	Cleans and structures the raw data
 5	get_formatted_csv	Converts processed data into CSV format
 6	load_to_dw	Loads final data into PostgreSQL
+
 🧠 Key Design Decisions
 ✅ Sensor-based API validation
 
@@ -103,8 +122,10 @@ Used as final analytical storage
 Bucket Structure
 
 stock-market/
+
 ├── raw/
 │   └── stock_prices_YYYY-MM-DD.json
+
 ├── processed/
 │   └── stock_prices_YYYY-MM-DD.csv
 
