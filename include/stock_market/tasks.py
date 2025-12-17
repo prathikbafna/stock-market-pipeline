@@ -5,6 +5,8 @@ from io import BytesIO, StringIO
 import pandas as pd
 from airflow.exceptions import AirflowNotFoundException
 
+bucket_name = 'stock-market'
+
 def get_minio_client():
     minio = BaseHook.get_connection('minio')
     client = Minio(
@@ -111,7 +113,7 @@ def _get_formatted_csv(path):
     bucket_name = 'stock-market'
     prefix_name = f"{path.split('/')[1]}/formatted_prices/"
     print(prefix_name)
-    
+
     objects = client.list_objects(bucket_name, prefix = prefix_name, recursive = True)
     for obj in objects:
         if obj.object_name.endswith('.csv'):
