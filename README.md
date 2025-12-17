@@ -100,81 +100,83 @@ Step	Task	Description
 Connections Used
 1️⃣ Stock API (stock_api)
 
-Type: HTTP
+    Type: HTTP
 
-Stores API host, endpoint, and headers
+    Stores API host, endpoint, and headers
 
-Accessed dynamically using BaseHook
+    Accessed dynamically using BaseHook
 
 2️⃣ MinIO (S3 Compatible)
 
-Uses AWS connection type
+    Uses AWS connection type
 
-Custom endpoint pointing to MinIO
+    Custom endpoint pointing to MinIO
 
-Enables use of S3ToSqlOperator
+    Enables use of S3ToSqlOperator
 
 3️⃣ PostgreSQL (Data Warehouse)
 
-Stores curated stock price data
+    Stores curated stock price data
 
-Used as final analytical storage
+    Used as final analytical storage
 
 🪣 Object Storage – MinIO
 
-Bucket Structure
+    Bucket Structure
 
-stock-market/
+    stock-market/
 
-├── raw/
-│   └── stock_prices_YYYY-MM-DD.json
+    ├── raw/
+    │   └── stock_prices_YYYY-MM-DD.json
 
-├── processed/
-│   └── stock_prices_YYYY-MM-DD.csv
+    ├── processed/
+    │   └── stock_prices_YYYY-MM-DD.csv
 
 
-This structure mirrors medallion architecture principles:
+    This structure mirrors medallion architecture principles:
 
-Raw → immutable API data
+    Raw → immutable API data
 
-Processed → cleaned, analytics-ready datasets
+    Processed → cleaned, analytics-ready datasets
 
-🗄️ Data Warehouse – PostgreSQL
+    🗄️ Data Warehouse – PostgreSQL
 
-Example table schema:
+    Example table schema:
 
-CREATE TABLE stock_prices (
-  symbol TEXT,
-  price NUMERIC,
-  currency TEXT,
-  timestamp TIMESTAMP,
-  ingest_date DATE
-);
+    CREATE TABLE stock_prices (
+    symbol TEXT,
+    price NUMERIC,
+    currency TEXT,
+    timestamp TIMESTAMP,
+    ingest_date DATE
+    );
 
 
 The table is populated automatically via Airflow’s S3ToSqlOperator.
 
-🐳 Dockerized Setup
-Services
+## 🐳 Dockerized Setup
+    Services
 
-Airflow Webserver
+    Airflow Webserver
 
-Airflow Scheduler
+    Airflow Scheduler
 
-MinIO
+    MinIO
 
-PostgreSQL
+    PostgreSQL
+
+    Metabase
 
 Start the project
 docker compose up -d --build
 
 Access UIs
-Service	URL
-Airflow	http://localhost:8080
 
-MinIO	http://localhost:9001
+    Airflow	http://localhost:8080
 
-Postgres	localhost:5432
+    MinIO	http://localhost:9001
+
+    Postgres	localhost:5432
 
 
 ### 📌 What This Project Demonstrates
