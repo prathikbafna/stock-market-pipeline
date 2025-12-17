@@ -1,9 +1,9 @@
-📈 Stock Market ETL Pipeline using Apache Airflow (Dockerized)
+# 📈 Stock Market ETL Pipeline using Apache Airflow (Dockerized)
 
 An end-to-end data engineering ETL pipeline built with Apache Airflow, MinIO (S3-compatible object storage), and PostgreSQL, fully containerized using Docker.
 The pipeline fetches daily stock prices from an external API, processes and stores intermediate data in object storage, and loads curated data into a data warehouse for analytics.
 
-🔍 Project Motivation
+## 🔍 Project Motivation
 
 Financial market data is:
 
@@ -25,7 +25,7 @@ Data reliability and observability
 
 Clean separation of raw, processed, and curated data
 
-🏗️ High-Level Architecture
+## 🏗️ High-Level Architecture
 
 Technology Stack
 
@@ -70,30 +70,33 @@ Step	Task	Description
 5	get_formatted_csv	Converts processed data into CSV format
 6	load_to_dw	Loads final data into PostgreSQL
 
-🧠 Key Design Decisions
-✅ Sensor-based API validation
+## 🧠 Key Design Decisions
 
-Prevents unnecessary failures
+### ✅ Sensor-based API validation
 
-Ensures downstream tasks only run when data is available
+    Prevents unnecessary failures
 
-✅ Object storage (MinIO) for intermediate data
+    Ensures downstream tasks only run when data is available
 
-Decouples ingestion from transformation
+### ✅ Object storage (MinIO) for intermediate data
 
-Enables reprocessing without re-calling the API
+    Decouples ingestion from transformation
 
-Mimics real cloud S3 architectures
+    Enables reprocessing without re-calling the API
 
-✅ Dockerized environment
+    Mimics real cloud S3 architectures
 
-Ensures reproducibility
+### ✅ Dockerized environment
 
-Easy local setup
+    Ensures reproducibility
 
-Matches production-like workflows
+    Easy local setup
 
-🧩 Airflow Connections Configuration
+    Matches production-like workflows
+
+
+## 🧩 Airflow Connections Configuration
+
 Connections Used
 1️⃣ Stock API (stock_api)
 
@@ -172,35 +175,9 @@ Airflow	http://localhost:8080
 MinIO	http://localhost:9001
 
 Postgres	localhost:5432
-▶️ Running the Pipeline
 
-Start Docker containers
 
-Configure Airflow connections
-
-Enable the stock_market DAG
-
-Trigger manually or let it run on schedule
-
-Monitor logs via Airflow UI
-
-Verify:
-
-Files in MinIO
-
-Records in PostgreSQL
-
-🚨 Error Handling & Reliability
-
-Sensor prevents API downtime failures
-
-Modular tasks allow re-runs from failure points
-
-Logs available per task for debugging
-
-Storage separation enables backfills
-
-📌 What This Project Demonstrates
+### 📌 What This Project Demonstrates
 
 ✔ Real-world Airflow DAG design
 ✔ API-based data ingestion
@@ -209,7 +186,7 @@ Storage separation enables backfills
 ✔ Warehouse loading patterns
 ✔ Production-style ETL orchestration
 
-🚀 Future Enhancements
+### 🚀 Future Enhancements
 
 Add data quality checks (Great Expectations)
 
@@ -223,8 +200,10 @@ Schema evolution handling
 
 CI/CD for DAG deployment
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Prathik Bharath Jain
-Data Engineer / Data Scientist
+
+Data Engineer | Data Scientist | Software Engineer
+
 MS in Data Science – University of Colorado Boulder
